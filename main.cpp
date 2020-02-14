@@ -8,26 +8,19 @@ void parse(const std::string& str, std::vector<std::string>& vec){
 		return;
 	vec.push_back(std::string{});
 	int space = 0;
-	//int len=0;
 	for(unsigned i=0; i<str.size(); ++i){
 		if(str[i] == ' '){
 			space = 1;
-			//len = 0;
 			continue;
 		}
 		if(space == 1){
 			space = 0;
 			vec.push_back(std::string{});
 		}
-		//len+=1;
 		if((str[i] >= 'A') && (str[i] <= 'Z'))
 			*(--vec.end()) += str[i] - 'A' + 'a';
 		else
 			*(--vec.end()) += str[i];
-		/*if(len == 16 ){
-			vec.push_back(std::string{});
-			len =0;
-		}*/
 	}
 }
 
@@ -42,11 +35,7 @@ int main(){
 		paterns.push_back(std::vector<std::string>{});
 		parse(str, *(--paterns.end()));
 	}
-	/*for(std::vector<std::string> v : vec )
-		for(std::string s : v){
-			std::cout<<s<<std::endl;
-		}*/
-	complex_trie<std::string> trie(paterns); trie.check();
+	complex_trie<std::string> trie(paterns);
 	std::vector<unsigned> str_sizes;
 	std::vector<std::string> words;
 	std::vector<unsigned> ans;
@@ -54,14 +43,13 @@ int main(){
 		std::getline(std::cin, str);
 		parse(str, words);
 		str_sizes.push_back(words.size());
-		if(*(--str_sizes.end()) == 0)
+		if(!std::cin.good())
 			break;
 		for(unsigned i = 0; i < words.size(); ++i){
 			if(trie.compare(words[i], ans)){
 				for(unsigned j = 0; j <ans.size(); ++j){ 
 					//номер строки, номер слова в строке, номер патерна
 					unsigned back = 1, size = i+1;
-					//std::cout<<"size = "<<size<<" ans[i] -1 = "<<(ans[j]-1)<<" paterns[ans[i]-1].size() = "<<paterns[ans[j]-1].size()<<std::endl;
 					while(size < paterns[ans[j]-1].size()){
 						size += *(str_sizes.end() - ++back);
 					}

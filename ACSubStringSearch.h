@@ -1,3 +1,4 @@
+#pragma once
 #include<map>
 #include<vector>
 #include<iostream>
@@ -20,7 +21,6 @@ complex_trie(const std::vector<std::vector<T>>& paterns){
 		else{
 			trie_ends.push_back(std::pair<bool, node*>{false, root->edges[paterns[i][0]]});
 			fin_pat+=1;
-			//root->edges[paterns[i][0]]->patern_num = i+1;
 			root->edges[paterns[i][0]]->patern_num.push_back(i+1);
 		}
 	}
@@ -49,7 +49,6 @@ complex_trie(const std::vector<std::vector<T>>& paterns){
 			if(paterns[i].size()==j+1){
 				fin_pat+=1;
 				trie_ends[i].first = false;
-				//trie_ends[i].second->edges[paterns[i][j]]->patern_num = i+1;
 				trie_ends[i].second->edges[paterns[i][j]]->patern_num.push_back(i+1);
 			}else{
 				trie_ends[i].second = trie_ends[i].second->edges[paterns[i][j]];
@@ -72,11 +71,9 @@ bool compare(const T& cmp, std::vector<unsigned>& ans ){
 		return false;
 	check_node = check_node->edges[cmp];
 	if(check_node->patern_num.size() > 0)
-		//ans.push_back(check_node->patern_num);
 		ans.insert(ans.end(), check_node->patern_num.begin(), check_node->patern_num.end());
 	node *output = check_node->output_edge;
 	while(output != nullptr){
-		//ans.push_back(output->patern_num);
 		ans.insert(ans.end(), output->patern_num.begin(), output->patern_num.end());
 		output = output->output_edge;
 	}
@@ -90,7 +87,6 @@ void check(){
 private:
 class node{
 public:
-//unsigned patern_num = 0;
 std::vector<unsigned> patern_num;
 node *unluck_edge = nullptr;
 node *output_edge = nullptr;
@@ -101,18 +97,6 @@ std::map<T, node*> edges;
 		delete edge.second;
 	}
 }
-void check(unsigned i){
-	std::cout<<i<<". ";
-	for(unsigned j : patern_num)
-		std::cout<<j<<' ';
-	std::cout<<this<<' '<<unluck_edge<<' '<<output_edge<<' ';
-	for(std::pair<T, node*> edge : edges)
-		std::cout<<edge.first<<' ';
-	std::cout<<std::endl;
-	for(std::pair<T, node*> edge : edges)
-		edge.second->check(i+1);
-}
-
 };
 node *check_node = nullptr;
 node *root = nullptr;
